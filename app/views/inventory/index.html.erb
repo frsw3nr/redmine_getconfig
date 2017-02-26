@@ -1,0 +1,25 @@
+<table class="list issues sort-by-id sort-desc">
+
+  <thead>
+    <tr>
+      <th>Tenant</th>
+      <th>Domain</th>
+      <th>Metric</th>
+      <th>Value</th>
+      <th>Verify</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @inventories.each do |inventory| %>
+    <tr>
+
+      <td><%= inventory.node.tenant.tenant_name %></td>
+      <td><%= inventory.metric.domain.domain_name %></td>
+      <td class="name"><%= inventory.metric.metric_name %></td>
+      <td class="subject"><%= inventory.value %></td>
+      <td><%= inventory.verify %></td>
+
+    </tr>
+  <% end %>
+  </tbody>
+</table>

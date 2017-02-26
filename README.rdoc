@@ -1,0 +1,97 @@
+= redmine_getconfig
+
+Description goes here
+
+モデル作成
+
+bundle exec bin/rails generate redmine_plugin_model redmine_getconfig site   site_name:string
+bundle exec bin/rails generate redmine_plugin_model redmine_getconfig tenant tenant_name:string
+bundle exec bin/rails generate redmine_plugin_model redmine_getconfig node   tenant:references node_name:string
+
+bundle exec bin/rails generate redmine_plugin_model redmine_getconfig site_node site:references node:references
+
+bundle exec bin/rails generate redmine_plugin_model redmine_getconfig domain domain_name:string
+bundle exec bin/rails generate redmine_plugin_model redmine_getconfig metric domain:references metric_name:string device_flag:boolean
+
+bundle exec bin/rails generate redmine_plugin_model redmine_getconfig test_result metric:references node:references value:string verify:integer
+
+bundle exec bin/rails generate redmine_plugin_model redmine_getconfig device_result metric:references node:references seq:integer item_name:string value:string
+
+DB作成
+
+mysql -u root -p
+drop database redmine ;
+create database redmine default character set utf8;
+grant all privileges on redmine.* to redmine@"%" identified by 'getperf' with grant option;
+flush privileges;
+exit
+
+mysql -u redmine -p redmine < redmine.dmp
+
+bundle exec bin/rake redmine:plugins:migrate RAILS_ENV=development
+
+mysql -u root -p redmine
+
+alter table sites default character set utf8mb4;
+alter table device_results default character set utf8mb4;
+alter table test_results default character set utf8mb4;
+alter table metrics default character set utf8mb4;
+alter table nodes default character set utf8mb4;
+alter table tenants default character set utf8mb4;
+alter table domains default character set utf8mb4;
+alter table site_nodes default character set utf8mb4;
+
+getconfig -u db-all
+
+select node_name, domain_name, metric_name, value
+from nodes,test_results,metrics,domains
+where test_results.node_id = nodes.id
+and test_results.metric_id = metrics.id
+and metrics.domain_id = domains.id
+and node_name = 'w2016'
+order by metrics.id
+
+アンインストール
+
+rake redmine:plugins:migrate NAME=redmine_getconfig VERSION=0 RAILS_ENV=production
+
+コントローラ
+------------
+
+# controller
+# 引数はplugin名, controller名, action名
+bundle exec bin/rails generate redmine_plugin_controller redmine_getconfig inventory index
+
+    app/controllers/inventory_controller.rb
+    app/helpers/inventory_helper.rb
+    test/functional/inventory_controller_test.rb
+    app/views/inventory/index.html.erb
+
+bundle exec bin/rails generate redmine_plugin_controller redmine_getconfig device_inventory index
+
+    app/controllers/device_inventory_controller.rb
+    app/helpers/device_inventory_helper.rb
+    test/functional/device_inventory_controller_test.rb
+    app/views/device_inventory/index.html.erb
+
+route.rb 編集
+
+get 'inventory', :to => 'inventory#index'
+get 'device_inventory', :to => 'device_inventory#index'
+
+
+動作確認
+
+vi .bundle/config
+BUNDLE_WITHOUT: development というオプション を外す
+
+bundle install
+
+./bin/rails s -b 0.0.0.0
+
+http://ostrich:3000/inventory?server_name=aaa
+http://ostrich:3000/device_inventory?server_name=w2016
+
+リファレンス
+
+http://www.gamvaro.com/kswiki/index.php?%E6%83%85%E5%A0%B1%E5%85%B1%E6%9C%89%2FRedmine_Plugin
