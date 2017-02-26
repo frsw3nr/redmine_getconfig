@@ -6,5 +6,4 @@ class CreateSites < ActiveRecord::Migration
 
     add_index :sites, :site_name, unique: true
   end
-
 end
