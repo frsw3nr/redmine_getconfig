@@ -1,3 +1,24 @@
+<h2>Devices</h2>
+
+<table class="list issues sort-by-id sort-desc">
+  <tbody>
+    <tr>
+      <% @devices.each do |device| %>
+        <td>
+          <%= link_to device.metric_name, {
+              controller: :device_inventory,
+              action: :index,
+              server_name: @node.node_name,
+              device_name: device.metric_name
+          } %>
+        </td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Metrics</h2>
+
 <table class="list issues sort-by-id sort-desc">
 
   <thead>

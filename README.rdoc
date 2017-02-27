@@ -95,3 +95,43 @@ http://ostrich:3000/device_inventory?server_name=w2016
 リファレンス
 
 http://www.gamvaro.com/kswiki/index.php?%E6%83%85%E5%A0%B1%E5%85%B1%E6%9C%89%2FRedmine_Plugin
+
+デバイスモデル
+
+Metric.find_by(metric_name: 'filesystem')
+
+1行のみを検索。Linux の filesystem を取得
+
+Node.find_by(node_name: 'w2016')
+
+id: 2, tenant_id: 1
+
+Node.find_by(node_name: 'w2016').test_results.where(
+
+Book.where(author: author)
+Book.joins(:authors).where(authors: { name: 'taro' })
+
+Node.joins(:metrics).find_by(node_name: 'w2016').where(metrics: { metric_name: 'filesystem'})
+
+Metric.joins(:nodes).where(nodes: { node_name: 'w2016'})
+
+Metric.joins(:nodes).where(nodes: { node_name: 'w2016'}, device_flag: 1).distinct
+
+Domain.find_by(domain_name: 'Windows').metrics.where(device_flag: 1)
+
+Windowsドメインのメトリックでdevice_flagが1の行を複数行取得
+
+Domain.find_by(domain_name: 'Windows').metrics.where(metric_name: 'filesystem')
+
+id: 101
+
+Node.find_by(node_name: 'w2016').device_results.where(metric_id: 58).order(seq: :desc)
+
+metric_id が 58のデバイス検査結果取得
+
+Node.find_by(node_name: 'w2016').device_results.where(metric_id: 101)
+
+http://ostrich:3000/device_inventory?device_name=filesystem&server_name=w2016
+
+
+
