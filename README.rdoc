@@ -54,6 +54,7 @@ order by metrics.id
 アンインストール
 
 rake redmine:plugins:migrate NAME=redmine_getconfig VERSION=0 RAILS_ENV=production
+rake redmine:plugins:migrate NAME=redmine_getconfig VERSION=0 RAILS_ENV=development
 
 コントローラ
 ------------
@@ -131,7 +132,7 @@ metric_id が 58のデバイス検査結果取得
 
 Node.find_by(node_name: 'w2016').device_results.where(metric_id: 101)
 
-http://ostrich:3000/device_inventory?device_name=filesystem&server_name=w2016
+http://ostrich:3000/inventory?server_name=ostrich
 
-
+http://ostrich:3000/device_inventory?server_name=ostrich&metric_name=filesystem
 
