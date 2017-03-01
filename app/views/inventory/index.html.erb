@@ -5,12 +5,7 @@
     <tr>
       <% @devices.each do |device| %>
         <td>
-          <%= link_to device.metric_name, {
-              controller: :device_inventory,
-              action: :index,
-              server_name: @node.node_name,
-              metric_name: device.metric_name
-          } %>
+          <%= link_to device.metric_name, device_inventory_path(@node.node_name, device.metric_name) %>
         </td>
       <% end %>
     </tr>
