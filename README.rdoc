@@ -28,6 +28,8 @@ exit
 
 mysql -u redmine -p redmine < redmine.dmp
 
+bundle install
+
 bundle exec bin/rake redmine:plugins:migrate RAILS_ENV=development
 
 mysql -u root -p redmine

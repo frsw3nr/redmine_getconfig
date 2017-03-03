@@ -1,4 +1,6 @@
 
+<h2><%= link_to @node_name, inventory_path(@node_name) %></h2>
+
 <table class="list issues sort-by-id sort-desc">
 
   <thead>
@@ -12,7 +14,7 @@
     <% @tables.each do |row| %>
       <tr>
         <% @headers.each do |header| %>
-          <td><%= row[header] %></td>
+          <td class="name"><%= row[header] %></td>
         <% end %>
       </tr>
     <% end %>
