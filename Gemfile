@@ -1,5 +1,5 @@
-gem 'ajax-datatables-rails', '0.1.2'
-gem 'jquery-datatables-rails'
+# gem 'ajax-datatables-rails', '0.1.2'
+# gem 'jquery-datatables-rails'
 gem "kaminari"
 
 group :development do

@@ -89,11 +89,11 @@ getconfig -u db         # Regist database
 **Search results on Redmine search page**
 
 
-The search page URL is "{Redmine base URL}/inventory/{server}" .
+The search page URL is "{Redmine base URL}/inventory?node={server}" .
 In the case of searching ostrich in the above example, the URL is as follows.
 
 ```
-http://{Redmine server}:3000/inventory/ostrich
+http://{Redmine server}:3000/inventory?node=ostrich
 ```
 
 **Redmine Customizing custom fields**
@@ -105,7 +105,7 @@ Please register the following custom fields with menu management, custom field.
 
 * Formant : Select "Text"
 * Name : Input "Inventory"
-* Link URL : "/redmine/inventory/%value%" or "/inventory/%value%"
+* Link URL : "/redmine/inventory?node=%value%" or "/inventory?node=%value%"
     * Please set it according to Redmine's base URL
 
 Reference

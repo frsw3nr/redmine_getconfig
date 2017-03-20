@@ -1,22 +1,42 @@
+<div id="content">
+  <div class="contextual">
+    <h2><%= t('device') %></h2>
 
-<h2><%= link_to @node_name, inventory_path(@node_name) %></h2>
-
-<table class="list issues sort-by-id sort-desc">
-
-  <thead>
-    <tr>
-      <% @headers.each do |header| %>
-        <th><%= header %></th>
-      <% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% @tables.each do |row| %>
-      <tr>
-        <% @headers.each do |header| %>
-          <td class="name"><%= row[header] %></td>
-        <% end %>
-      </tr>
+    <%= form_tag({:action=>"index"}, {:method=>"get"}) do %>
+      <%= t('tenant') %> <input name="tenant" value="<%=h @tenant %>"/>
+      <%= t('node') %>   <input name="node"   value="<%=h @node   %>"/>
+      <%= t('device') %>
+      <%= select :device, :id,
+                 @devices.map{|d| [d.domain.domain_name + ':' + d.metric_name, d.id]},
+                 { :selected => @metric_id },
+                 :onchange => "this.form.submit()"
+      %>
+      <%= submit_tag "検索" %>
     <% end %>
-  </tbody>
-</table>
+    <%= button_to t('inventory'),
+                  {:controller => 'inventory', :action => 'index'},
+                  :method => :get %>
+
+    <table  class="list issue-report">
+      <thead>
+        <tr>
+          <% @headers.each do |header| %>
+            <th><%= header %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tables.each do |row| %>
+          <tr class="<%= cycle("even", "odd") %>">
+            <% @headers.each do |header| %>
+              <td class="name"><%= row[header] %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <%= paginate @rows %>
+
+  </div>
+</div>

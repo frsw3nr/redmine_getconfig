@@ -2,23 +2,52 @@ class DeviceInventoryController < ApplicationController
   unloadable
 
   def index
+    @tenant = params[:tenant] || '%'
+    @node   = params[:node]   || '%'
+    @domain = params[:domain] || '%'
 
-    @node_name   = params['server_name']
-    @metric_name = params['metric_name']
+    nodes = Node.joins(:tenant).where(
+           'tenants.tenant_name like ? and node_name like ?',
+           @tenant,
+           @node)
 
-    metric = Metric.joins(:nodes).find_by!(nodes: { node_name: @node_name}, metric_name: @metric_name)
+    return head(:not_found) if nodes.ids.blank?
+
+    @metric_id = params[:device][:id]
+    @rows = DeviceResult.where(
+                node_id: nodes.ids, metric_id: @metric_id
+            ).select(
+                :node_id, :metric_id, :seq
+            ).uniq.page(
+                params[:page]
+            )
 
     @tables = []
-    Node.find_by!(node_name: @node_name).device_results.where(metric_id: metric.id).order(seq: :asc).group_by(&:seq).each do |seq, devices|
-      record = {}
-      record["seq"] = seq
-      devices.each do |device|
-        record[device.item_name] = device.value
-      end
-      @tables.append(record)
+    @rows.each do |row|
+        DeviceResult.where(
+            node_id: row.node_id, metric_id: row.metric_id, seq: row.seq
+        ).includes(
+            :node, :metric
+        ).group_by(&:seq).each do |seq, devices|
+          record = {}
+          record[:seq] = seq
+          record[:node] = devices[0].node.node_name
+          devices.each do |device|
+            record[device.item_name] = device.value
+          end
+          @tables.append(record)
+        end
     end
-
+    return head(:not_found) if @tables.blank?
     @headers = @tables[0].keys
 
+# binding.pry
+    # domain_filter = '%'
+    # domain_filter = if 
+    domain_name = Metric.find(@metric_id).domain.domain_name
+    @devices = Metric.joins(:domain).where(
+                'device_flag = 1', domain_name)
+# binding.pry
   end
+
 end

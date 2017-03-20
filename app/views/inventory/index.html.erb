@@ -1,60 +1,49 @@
-<h2>Devices</h2>
+<div id="content">
+  <div class="contextual">
+    <h2><%= t('inventory') %></h2>
 
-<table class="list issues sort-by-id sort-desc">
-  <tbody>
-    <tr>
-      <% @devices.each do |device| %>
-        <td>
-          <%= link_to device.metric_name, device_inventory_path(@node.node_name, device.metric_name) %>
-        </td>
-      <% end %>
-    </tr>
-  </tbody>
-</table>
+    <%= form_tag({:action=>"index"}, {:method=>"get"}) do %>
+      <%= t('tenant') %> <input name="tenant" value="<%=h @tenant %>"/>
+      <%= t('node') %>   <input name="node"   value="<%=h @node   %>"/>
+      <%= t('metric') %> <input name="metric" value="<%=h @metric %>"/>
+      <%= submit_tag "検索" %>
+    <% end %>
+    <%= form_tag({:controller=>"device_inventory", :action=>"index"}, {:method=>"get"}) do %>
+      <%= hidden_field_tag 'tenant', @tenant %>
+      <%= hidden_field_tag 'node',   @node %>
+      <%= t('device') %>
+      <%= select :device, :id,
+                 @devices.map{|d| [d.domain.domain_name + ':' + d.metric_name, d.id]},
+                 { :include_blank => true },
+                 :onchange => "this.form.submit()"
+      %>
+    <% end %>
 
-<h2>Metrics</h2>
+    <table  class="list issue-report">
+      <thead>
+        <tr>
+          <th><%= t('tenant') %></th>
+          <th><%= t('domain') %></th>
+          <th><%= t('node') %></th>
+          <th><%= t('metric') %></th>
+          <th><%= t('value') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @inventories.each do |inventory| %>
+          <tr class="<%= cycle("even", "odd") %>">
+            <td class="status"><%= inventory.node.tenant.tenant_name %></td>
+            <td class="status"><%= inventory.metric.domain.domain_name %></td>
+            <td class="name"><%= inventory.node.node_name %></td>
+            <td class="name"><%= inventory.metric.metric_name %></td>
+            <td class="subject"><%= inventory.value %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
-<!--
+    <%= paginate @inventories %>
 
-<table id="inventory-table", data-source="<%= inventory_path(format: :json) %>">
-  <thead>
-    <tr>
-      <th>Tenant</th>
-      <th>Domain</th>
-      <th>Metric</th>
-      <th>Value</th>
-      <th>Verify</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
+  </div>
+</div>
 
- -->
-
-<table class="list issues sort-by-id sort-desc">
-
-  <thead>
-    <tr>
-      <th>Tenant</th>
-      <th>Domain</th>
-      <th>Metric</th>
-      <th>Value</th>
-      <th>Verify</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @inventories.each do |inventory| %>
-    <tr>
-
-      <td><%= inventory.node.tenant.tenant_name %></td>
-      <td><%= inventory.metric.domain.domain_name %></td>
-      <td class="name"><%= inventory.metric.metric_name %></td>
-      <td class="subject"><%= inventory.value %></td>
-      <td><%= inventory.verify %></td>
-
-    </tr>
-  <% end %>
-  </tbody>
-</table>
