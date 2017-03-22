@@ -9,3 +9,8 @@ tr.entry td.revision, tr.entry td.author { text-align: center; }
 tr.entry td.age { text-align: right; }
 tr.entry.file td.filename a { margin-left: 16px; }
 tr.entry.file td.filename_no_report a { margin-left: 16px; }
+
+table.inventory {
+  table-layout:auto;
+  width:100%;
+}
