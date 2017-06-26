@@ -1,12 +1,5 @@
 <div id="content">
 
-
-<div class="contextual">
-<%= button_to t('inventory'),
-              {:controller => 'inventory', :action => 'index'},
-              :method => :get %>
-</div>
-
 <h2><%= t('device') %></h2>
 
 <%= form_tag({:action=>"index"}, {:method=>"get"}) do %>
@@ -20,6 +13,9 @@
   %>
   <%= submit_tag "検索" %>
 <% end %>
+<%= button_to t('button_back'),
+              {:controller => 'inventory', :action => 'index'},
+              :method => :get %>
 
 <table  class="inventory list">
   <thead>
