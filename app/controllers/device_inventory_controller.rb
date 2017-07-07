@@ -1,5 +1,10 @@
 class DeviceInventoryController < ApplicationController
   unloadable
+  include Common
+
+  # def wildcard(keyword = nil)
+  #   (keyword.blank?) ? '%' : "%#{keyword}%"
+  # end
 
   def index
     @tenant = params[:tenant] || '%'
@@ -8,8 +13,8 @@ class DeviceInventoryController < ApplicationController
 
     nodes = Node.joins(:tenant).where(
            'tenants.tenant_name like ? and node_name like ?',
-           @tenant,
-           @node)
+           wildcard(@tenant),
+           wildcard(@node))
 
     return head(:not_found) if nodes.ids.blank?
 
@@ -41,13 +46,9 @@ class DeviceInventoryController < ApplicationController
     return head(:not_found) if @tables.blank?
     @headers = @tables[0].keys
 
-# binding.pry
-    # domain_filter = '%'
-    # domain_filter = if 
     domain_name = Metric.find(@metric_id).domain.domain_name
     @devices = Metric.joins(:domain).where(
                 'device_flag = 1', domain_name)
-# binding.pry
   end
 
 end
