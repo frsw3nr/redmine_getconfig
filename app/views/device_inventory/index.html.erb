@@ -3,6 +3,7 @@
 <h2><%= t('device') %></h2>
 
 <%= form_tag({:action=>"index"}, {:method=>"get"}) do %>
+  <%= hidden_field_tag 'project_id', @project_id %>
   <%= t('tenant') %> <input name="tenant" value="<%=h @tenant %>"/>
   <%= t('node') %>   <input name="node"   value="<%=h @node   %>"/>
   <%= t('device') %>
