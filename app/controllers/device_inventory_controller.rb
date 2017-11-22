@@ -10,7 +10,9 @@ class DeviceInventoryController < ApplicationController
     @tenant = params[:tenant] || '%'
     @node   = params[:node]   || '%'
     @domain = params[:domain] || '%'
-    @project = Project.find(session[:query][:project_id])
+
+    # @project = Project.find(session[:query][:project_id])
+    @project = Project.find(session[:project_id])
 
     nodes = Node.joins(:tenant).where(
            'tenants.tenant_name like ? and node_name like ?',

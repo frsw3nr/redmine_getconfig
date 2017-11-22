@@ -9,12 +9,14 @@ class InventoryController < ApplicationController
     #     render json: InventoryDatatable.new(view_context)
     #   end
     # end
-
     @tenant = params[:tenant] || '%'
     @node   = params[:node]   || '%'
     @domain = params[:domain] || '%'
     @metric = params[:metric] || '%'
-    @project = Project.find(session[:query][:project_id])
+
+    # # @project = Project.find(session[:query][:project_id])
+    @project = Project.find(params[:id] || session[:project_id])
+    session[:project_id] = @project.id
 
     node_ids   = Node.joins(:tenant).where(
                     'tenants.tenant_name like ? and node_name like ?',
