@@ -8,7 +8,7 @@
   <%= t('node') %>   <input name="node"   value="<%=h @node   %>"/>
   <%= t('device') %>
   <%= select :device, :id,
-             @devices.map{|d| [d.domain.domain_name + ':' + d.metric_name, d.id]},
+             @devices.map{|d| [d.platform.platform_name + ':' + d.metric_name, d.id]},
              { :selected => @metric_id },
              :onchange => "this.form.submit()"
   %>

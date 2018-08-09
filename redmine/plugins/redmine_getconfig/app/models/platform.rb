@@ -1,4 +1,4 @@
-class Domain < ActiveRecord::Base
+class Platform < ActiveRecord::Base
   unloadable
   has_many :metrics
 end

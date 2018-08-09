@@ -65,7 +65,7 @@ inventories = TestResult.where(node_id: node_ids, metric_id: metric_ids).include
 
 inventories[0].id
 inventories[0].node.tenant.tenant_name
-inventories[0].metric.domain.domain_name
+inventories[0].metric.platform.platform_name
 inventories[0].node.node_name
 inventories[0].metric.metric_name
 inventories[0].value
@@ -93,7 +93,7 @@ http://ostrich:3000/inventory/
 
   # Id
   # Tenant
-  # Domain
+  # Platform
   # Node
   # Metric
   # Value

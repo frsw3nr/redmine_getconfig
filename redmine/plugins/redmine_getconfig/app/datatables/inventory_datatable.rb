@@ -27,7 +27,7 @@ class InventoryDatatable < AjaxDatatablesRails::Base
     records.map do |record|
       [
         record.node.tenant.tenant_name,
-        record.metric.domain.domain_name,
+        record.metric.platform.platform_name,
         record.metric.metric_name,
         record.value,
         record.verify

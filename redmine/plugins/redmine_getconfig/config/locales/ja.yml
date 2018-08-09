@@ -1,7 +1,7 @@
 ja:
   inventory: サーバ構成情報
   tenant: サイト
-  domain: ドメイン
+  platform: プラットフォーム
   node: サーバー
   metric: 項目
   value: 値

@@ -7,9 +7,9 @@ class DeviceInventoryController < ApplicationController
   # end
 
   def index
-    @tenant = params[:tenant] || '%'
-    @node   = params[:node]   || '%'
-    @domain = params[:domain] || '%'
+    @tenant   = params[:tenant] || '%'
+    @node     = params[:node]   || '%'
+    @platform = params[:platform] || '%'
 
     # @project = Project.find(session[:query][:project_id])
     @project = Project.find(session[:project_id])
@@ -49,9 +49,9 @@ class DeviceInventoryController < ApplicationController
     return head(:not_found) if @tables.blank?
     @headers = @tables[0].keys
 
-    domain_name = Metric.find(@metric_id).domain.domain_name
-    @devices = Metric.joins(:domain).where(
-                'device_flag = 1', domain_name)
+    platform_name = Metric.find(@metric_id).platform.platform_name
+    @devices = Metric.joins(:platform).where(
+                'device_flag = 1', platform_name)
   end
 
 end

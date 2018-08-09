@@ -4,11 +4,11 @@
 <div class="contextual">
 <%= form_tag({:controller=>"device_inventory", :action=>"index"}, {:method=>"get"}) do %>
   <%= hidden_field_tag 'tenant', @tenant %>
-  <%= hidden_field_tag 'domain', @domain %>
+  <%= hidden_field_tag 'platform', @platform %>
   <%= hidden_field_tag 'node',   @node %>
   <%= t('device') %>
   <%= select :device, :id,
-             @devices.map{|d| [d.domain.domain_name + ':' + d.metric_name, d.id]},
+             @devices.map{|d| [d.platform.platform_name + ':' + d.metric_name, d.id]},
              { :include_blank => true },
              {:onchange => "this.form.submit()", :id => "project_quick_jump_box" }
   %>
@@ -19,7 +19,7 @@
 
 <%= form_tag({:action=>"index"}, {:method=>"get"}) do %>
   <%= t('tenant') %> <input name="tenant" value="<%=h @tenant %>"/>
-  <%= t('domain') %> <input name="domain" value="<%=h @domain %>"/>
+  <%= t('platform') %> <input name="platform" value="<%=h @platform %>"/>
   <%= t('node') %>   <input name="node"   value="<%=h @node   %>"/>
   <%= t('metric') %> <input name="metric" value="<%=h @metric %>"/>
   <%= submit_tag "検索" %>
@@ -29,7 +29,7 @@
   <thead>
     <tr>
       <th><%= t('tenant') %></th>
-      <th><%= t('domain') %></th>
+      <th><%= t('platform') %></th>
       <th><%= t('node') %></th>
       <th><%= t('metric') %></th>
       <th><%= t('value') %></th>
@@ -39,7 +39,7 @@
     <% @inventories.each do |inventory| %>
       <tr class="<%= cycle("even", "odd") %>">
         <td class="status"><%= inventory.node.tenant.tenant_name %></td>
-        <td class="status"><%= inventory.metric.domain.domain_name %></td>
+        <td class="status"><%= inventory.metric.platform.platform_name %></td>
         <td class="name"><%= inventory.node.node_name %></td>
         <td class="name"><%= inventory.metric.metric_name %></td>
         <td class="subject"><%= inventory.value %></td>

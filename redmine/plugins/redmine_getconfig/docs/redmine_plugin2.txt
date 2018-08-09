@@ -30,8 +30,8 @@ bundle exec rails generate redmine_plugin_model getconfig node   tenant:refferen
 
 bundle exec rails generate redmine_plugin_model getconfig site_node site:refferences node:refferences
 
-bundle exec rails generate redmine_plugin_model getconfig domain domain_name:string
-bundle exec rails generate redmine_plugin_model getconfig metric domain:refferences metric_name:string
+bundle exec rails generate redmine_plugin_model getconfig platform platform_name:string
+bundle exec rails generate redmine_plugin_model getconfig metric platform:refferences metric_name:string
 
 bundle exec rails generate redmine_plugin_model getconfig test_result metric:refferences node:refferences value:string verify:integer
 
@@ -68,13 +68,13 @@ Node.includes(:tenant).find_by(id: 1)
 
 検査結果
 
-Domain.all
-metric=Metric.eager_load(:domain).find_by(metric_name: 'cpu')
-Metric.eager_load(:domain).find_by(id:30).domain
-Metric.eager_load(:domain).find_by(metric_name: "mem_free").domain
+Platform.all
+metric=Metric.eager_load(:platform).find_by(metric_name: 'cpu')
+Metric.eager_load(:platform).find_by(id:30).platform
+Metric.eager_load(:platform).find_by(metric_name: "mem_free").platform
 
-TestResult.eager_load(:metric,:domain,:node)
-TestResult.find_by(:metric_id: 30)
+TestResult.eager_load(:metric,:platform,:node)
+TestResult.find_by(metric_id: 30)
 TestResult.eager_load(:metric).find_by(metric_id: 30)
 
 TestResult.find_by(metric_id: 30).node.tenant
@@ -82,11 +82,11 @@ TestResult.find_by(metric_id: 30).node.tenant
 デバイス付き検査結果
 
 DeviceResult.all()
-DeviceResult.find_by(metric_id: 90).metric
+DeviceResult.find_by(metric_id: 21).metric
 
 @devices=Node.find_by(node_name:'Jenkins').device_results
 @devices[0].metric.metric_name
-@devices[0].metric.domain.domain_name
+@devices[0].metric.platform.platform_name
 
 コントローラ
 ------------
@@ -108,7 +108,7 @@ bundle exec rails generate redmine_plugin_controller getconfig test_result index
 @results[0].node.tenant.tenant_name
 => "_Default"
 
-@results[0].metric.domain.domain_name
+@results[0].metric.platform.platform_name
 => "Zabbix"
 
 @results[0].metric.metric_name
@@ -143,7 +143,7 @@ Node.find_by(node_name:'Jenkins').device_results.select(:metic_id).eager_load(:m
 => 1
 Metric.find_by(id: 1).metric_name
 => "Host"
-Metric.find_by(id: 1).domain.domain_name
+Metric.find_by(id: 1).platform.platform_name
 => "Zabbix"
 
 rails generate datatable User
@@ -152,7 +152,7 @@ bundle exec rails generate redmine_plugin_datatable redmine_getconfig TestResult
 
     <tr>
       <th>Tenant</th>
-      <th>Domain</th>
+      <th>Platform</th>
       <th>Metric</th>
       <th>Value</th>
       <th>Verify</th>
@@ -163,7 +163,7 @@ bundle exec rails generate redmine_plugin_datatable redmine_getconfig TestResult
     <tr>
 
       <td><%= result.node.tenant.tenant_name %></td>
-      <td><%= result.metric.domain.domain_name %></td>
+      <td><%= result.metric.platform.platform_name %></td>
       <td><%= result.metric.metric_name %></td>
       <td><%= result.value %></td>
       <td><%= result.verify %></td>
