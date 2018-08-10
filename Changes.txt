@@ -6,6 +6,17 @@ New features:
 * プロジェクト作成コマンド追加 [ ]
 * ネットワーク管理追加 [ ]
 
+ToDo:
+* フロー名定義
+    * stocktaking
+        * network_address ... ネットワークアドレス棚卸し
+    * shipping
+        * on_premise ... オンプレミス機器搬入
+        * cloud ... クラウド機器搬入
+    * deployment
+        * monitor ... 監視設定
+        * database ... データベース構築
+
 Bug fixes:
 * domains テーブル名を platforms に見直し [x]
 
